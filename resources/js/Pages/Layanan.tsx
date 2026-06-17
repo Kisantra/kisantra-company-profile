@@ -54,33 +54,31 @@ const services = [
     id: "01",
     title: "Perpajakan",
     subtitle: "Tax Compliance & Strategy",
-    desc: "Solusi kepatuhan pajak menyeluruh untuk meminimalisir risiko sengketa dan denda. Kami menangani segala aspek perpajakan perusahaan Anda dengan presisi tinggi.",
-    price: "2.500.000",
+    desc: "Kepatuhan pajak menyeluruh untuk menekan risiko sengketa & denda.",
+    price: "1.500.000",
     priceUnit: "/ bulan",
     image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=1000&auto=format&fit=crop",
     features: [
-      "Pelaporan SPT Tahunan",
-      "Perhitungan PPN & PPH Masa",
-      "Pendampingan Tax Amnesty",
+      "Pelaporan SPT Tahunan & Masa",
+      "Perhitungan PPN & PPh",
       "Review & Audit Kepatuhan",
-      "Restitusi Pajak Korporasi",
-      "Konsultasi Sengketa Pajak"
+      "Pendampingan Pemeriksaan Pajak",
+      "Konsultasi Sengketa & Keberatan",
+      "Tax Planning Korporasi"
     ]
   },
   {
     id: "02",
     title: "Keuangan",
     subtitle: "Financial Advisory & Audit",
-    desc: "Transformasi data transaksi menjadi laporan keuangan standar PSAK yang akurat untuk pengambilan keputusan bisnis yang lebih tajam dan terukur.",
-    price: "3.000.000",
+    desc: "Laporan keuangan standar PSAK yang akurat & tepat waktu.",
+    price: "750.000",
     priceUnit: "/ bulan",
     image: "https://images.unsplash.com/photo-1628348068343-c6a848d2b6dd?q=80&w=1000&auto=format&fit=crop",
     features: [
       "Laporan Laba Rugi & Neraca",
-      "Analisis Arus Kas (Cash Flow)",
+      "Analisis Arus Kas",
       "Valuasi Aset & Bisnis",
-      "Studi Kelayakan Bisnis",
-      "Sistem Payroll & Penggajian",
       "Audit Internal Operasional"
     ]
   },
@@ -88,34 +86,45 @@ const services = [
     id: "03",
     title: "Digital Marketing",
     subtitle: "Growth & Performance",
-    desc: "Strategi pemasaran berbasis data untuk meningkatkan omset dan brand awareness. Kami membantu bisnis Anda menjangkau audiens yang tepat di waktu yang tepat.",
-    price: "5.000.000",
+    desc: "Strategi pemasaran berbasis data untuk mendongkrak omset.",
+    price: "1.500.000",
     priceUnit: "/ project",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1000&auto=format&fit=crop",
     features: [
       "SEO & SEM Optimization",
       "Social Media Management",
       "Meta & Google Ads",
-      "Content Strategy",
-      "Brand Identity Design",
-      "Market Research Analytics"
+      "Brand Identity Design"
     ]
   },
   {
     id: "04",
     title: "Sistem Digital",
     subtitle: "Automation & ERP",
-    desc: "Membangun infrastruktur teknologi untuk efisiensi operasional tanpa batas. Integrasikan seluruh proses bisnis Anda dalam satu dashboard terpusat.",
-    price: "5.000.000",
+    desc: "Infrastruktur teknologi untuk efisiensi operasional terpusat.",
+    price: "2.500.000",
     priceUnit: "/ system",
     image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1000&auto=format&fit=crop",
     features: [
       "Custom ERP Development",
       "Pembuatan Website Korporat",
-      "Integrasi POS & Stok",
       "Dashboard Visualisasi Data",
-      "Cloud Server Setup",
-      "Cybersecurity Audit"
+      "Cloud Server Setup"
+    ]
+  },
+  {
+    id: "05",
+    title: "Administrasi",
+    subtitle: "Licensing & Legal Setup",
+    desc: "Pengurusan legalitas & dokumen usaha hingga siap beroperasi.",
+    price: "350.000",
+    priceUnit: "/ dokumen",
+    image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?q=80&w=1000&auto=format&fit=crop",
+    features: [
+      "Pembuatan NPWP Pribadi & Badan",
+      "Pengukuhan PKP",
+      "Pendirian PT & CV",
+      "Izin Usaha (NIB & OSS)"
     ]
   }
 ];

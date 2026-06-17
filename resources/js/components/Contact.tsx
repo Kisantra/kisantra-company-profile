@@ -20,11 +20,16 @@ export const Contact: React.FC = () => {
             {/* Address */}
             <div>
                  <span className="text-xs uppercase tracking-widest text-lux-teal font-sans font-bold block mb-6">Kantor & Wilayah</span>
-                 <p className="text-neutral-300 font-sans font-light leading-relaxed">
-                    Sebelah Langgar al-as'ad, Gg. Kopta,<br/>
-                    Air Putih, Kec. Samarinda Ulu,<br/>
+                 <a
+                    href="https://maps.app.goo.gl/uruyuiRPund8uwAm7"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block text-neutral-300 font-sans font-light leading-relaxed hover:text-lux-teal transition-colors"
+                 >
+                    Gg. Kopta, Air Putih,<br/>
+                    Kec. Samarinda Ulu,<br/>
                     Kota Samarinda, Kalimantan Timur 75243
-                 </p>
+                 </a>
             </div>
 
             {/* Contact Info */}
@@ -72,19 +77,37 @@ export const Contact: React.FC = () => {
       </div>
 
       {/* Elegant Monochrome Map Integration - Samarinda Centered */}
-      <div className="w-full h-[300px] relative filter grayscale contrast-125 border-y border-neutral-800">
-        <div className="absolute inset-0 bg-neutral-900/40 pointer-events-none z-10 mix-blend-overlay"></div>
-        <iframe
-            src="https://www.google.com/maps?q=Sebelah%20Langgar%20al-as%27ad%2C%20Gg.%20Kopta%2C%20Air%20Putih%2C%20Kec.%20Samarinda%20Ulu%2C%20Kota%20Samarinda%2C%20Kalimantan%20Timur%2075243&output=embed"
-            width="100%"
-            height="100%"
-            style={{ border: 0 }}
-            allowFullScreen
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Kisantra Consulting Location - Sebelah Langgar al-as'ad"
-            className="opacity-60 hover:opacity-100 transition-opacity duration-700"
-        ></iframe>
+      <div className="group w-full h-[300px] relative border-y border-neutral-800">
+        <div className="absolute inset-0 filter grayscale contrast-125">
+            <div className="absolute inset-0 bg-neutral-900/40 pointer-events-none z-10 mix-blend-overlay"></div>
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d997.4195027572671!2d117.12491949999999!3d-0.4805135!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2df679c547514d5f%3A0x8025788902b609e1!2sKisantra%20Consulting!5e0!3m2!1sen!2sid!4v1781666707690!5m2!1sen!2sid"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Kisantra Consulting Location"
+                className="h-full w-full opacity-60 transition-opacity duration-700 group-hover:opacity-100"
+            ></iframe>
+        </div>
+
+        {/* Clickable overlay → opens Google Maps */}
+        <a
+            href="https://maps.app.goo.gl/uruyuiRPund8uwAm7"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Buka lokasi Kisantra Consult di Google Maps"
+            className="absolute inset-0 z-20 flex items-end justify-end p-4 md:p-6"
+        >
+            <span className="inline-flex items-center gap-2 rounded-full bg-lux-black/80 px-4 py-2 text-[10px] md:text-xs font-bold uppercase tracking-[0.15em] text-white backdrop-blur transition-colors group-hover:bg-lux-teal group-hover:text-lux-black">
+                Buka di Google Maps
+                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+            </span>
+        </a>
       </div>
 
       {/* Copyright Bar */}
