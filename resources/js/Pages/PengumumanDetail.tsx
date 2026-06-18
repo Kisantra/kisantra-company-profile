@@ -260,7 +260,7 @@ const PengumumanDetail: React.FC<PengumumanDetailProps> = ({ announcement, relat
                   [&_h2]:mb-4 [&_h2]:mt-10 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:tracking-tight [&_h2]:text-lux-black md:[&_h2]:text-3xl
                   [&_h3]:mb-3 [&_h3]:mt-8 [&_h3]:text-xl [&_h3]:font-bold [&_h3]:text-lux-black
                   [&_blockquote]:my-6 [&_blockquote]:rounded-r-xl [&_blockquote]:border-l-4 [&_blockquote]:border-lux-teal [&_blockquote]:bg-neutral-50 [&_blockquote]:px-6 [&_blockquote]:py-4 [&_blockquote]:font-serif [&_blockquote]:text-lux-black/80
-                  [&_img]:my-6 [&_img]:w-full [&_img]:max-h-[520px] [&_img]:rounded-2xl [&_img]:object-cover [&_img]:shadow-lg"
+                  [&_img]:my-6 [&_img]:w-full [&_img]:rounded-2xl [&_img]:shadow-lg"
                 dangerouslySetInnerHTML={{ __html: announcement.content }}
               />
 
