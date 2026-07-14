@@ -7,6 +7,7 @@ import { Hero } from '../components/Hero';
 import { Impact } from '../components/Impact';
 import { Services } from '../components/Services';
 import { Industries } from '../components/Industries';
+import { Portfolio } from '../components/Portfolio';
 import { Philosophy } from '../components/Philosophy';
 import { Insights } from '../components/Insights';
 import { Contact } from '../components/Contact';
@@ -74,6 +75,9 @@ const App: React.FC = () => {
               <Philosophy />
               <Services />
               <Industries />
+              <div className="mx-auto max-w-[1400px] px-6 pt-24 md:px-12 md:pt-32">
+                <Portfolio />
+              </div>
               <FAQ />
               <CTA />
               <Insights articles={articles} />

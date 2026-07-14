@@ -3,6 +3,7 @@ import { motion, useScroll, useTransform, useInView, useSpring, AnimatePresence 
 import { Head } from '@inertiajs/react';
 import { Navbar } from '../components/Navbar';
 import { Contact } from '../components/Contact';
+import { Portfolio } from '../components/Portfolio';
 import { geoMercator, geoPath } from 'd3-geo';
 import { feature } from 'topojson-client';
 
@@ -201,7 +202,7 @@ export const AboutSection: React.FC = () => {
   const pathGenerator = useMemo(() => geoPath().projection(projection), [projection]);
 
   return (
-    <section ref={containerRef} id="about" className="relative bg-lux-white w-full py-32 md:py-64 overflow-hidden">
+    <section ref={containerRef} id="about" className="relative bg-lux-white w-full py-32 md:py-64 overflow-clip">
 
       {/* --- SECTION PATTERNS --- */}
 
@@ -668,6 +669,9 @@ export const AboutSection: React.FC = () => {
             }} />
           </div>
         </div>
+
+        {/* Interactive Sector Portfolio */}
+        <Portfolio />
 
         {/* Staggered Floating Pillars */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16 relative">
