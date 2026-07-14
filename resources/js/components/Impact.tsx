@@ -73,7 +73,7 @@ export const Impact: React.FC = () => {
                             transition={{ duration: 1.2, delay: 0.3 }}
                             className="text-lg md:text-xl text-neutral-600 font-light leading-relaxed max-w-md"
                         >
-                            Sebagai partner <span className="text-lux-black font-semibold">konsultan pajak di Samarinda</span>, kami telah membantu ratusan entitas bisnis di Kalimantan Timur meraih efisiensi fiskal dan transformasi digital yang signifikan.
+                            Sebagai partner <span className="text-lux-black font-semibold">konsultan bisnis di Samarinda</span>, kami telah membantu ratusan entitas bisnis di Kalimantan Timur meraih efisiensi fiskal dan transformasi digital yang signifikan.
                         </motion.p>
                     </div>
 

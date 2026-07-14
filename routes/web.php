@@ -192,6 +192,57 @@ Route::get('/pengumuman/{slug}', function ($slug) {
     ]);
 })->name('announcements.show');
 
+// SEO: robots.txt & sitemap.xml (dynamic so URLs follow APP_URL / domain)
+Route::get('/robots.txt', function () {
+    $content = "User-agent: *\nDisallow:\n\nSitemap: " . url('/sitemap.xml') . "\n";
+
+    return response($content, 200, ['Content-Type' => 'text/plain']);
+});
+
+Route::get('/sitemap.xml', function () {
+    $urls = [
+        ['loc' => url('/'), 'changefreq' => 'weekly', 'priority' => '1.0'],
+        ['loc' => url('/tentang-kami'), 'changefreq' => 'monthly', 'priority' => '0.8'],
+        ['loc' => url('/layanan'), 'changefreq' => 'monthly', 'priority' => '0.9'],
+        ['loc' => url('/karir'), 'changefreq' => 'weekly', 'priority' => '0.7'],
+        ['loc' => url('/kontak'), 'changefreq' => 'yearly', 'priority' => '0.6'],
+        ['loc' => url('/pengumuman'), 'changefreq' => 'weekly', 'priority' => '0.7'],
+        ['loc' => url('/articles'), 'changefreq' => 'weekly', 'priority' => '0.8'],
+    ];
+
+    foreach (\App\Models\Article::published()->latest('published_at')->get(['slug', 'updated_at']) as $article) {
+        $urls[] = [
+            'loc' => url('/articles/' . $article->slug),
+            'lastmod' => optional($article->updated_at)->toAtomString(),
+            'changefreq' => 'monthly',
+            'priority' => '0.7',
+        ];
+    }
+
+    foreach (\App\Models\Announcement::published()->latest('published_at')->get(['slug', 'updated_at']) as $announcement) {
+        $urls[] = [
+            'loc' => url('/pengumuman/' . $announcement->slug),
+            'lastmod' => optional($announcement->updated_at)->toAtomString(),
+            'changefreq' => 'monthly',
+            'priority' => '0.6',
+        ];
+    }
+
+    $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+    $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+    foreach ($urls as $u) {
+        $xml .= '  <url><loc>' . e($u['loc']) . '</loc>';
+        if (! empty($u['lastmod'])) {
+            $xml .= '<lastmod>' . $u['lastmod'] . '</lastmod>';
+        }
+        $xml .= '<changefreq>' . $u['changefreq'] . '</changefreq>';
+        $xml .= '<priority>' . $u['priority'] . '</priority></url>' . "\n";
+    }
+    $xml .= '</urlset>';
+
+    return response($xml, 200, ['Content-Type' => 'application/xml']);
+});
+
 // Legacy berita routes (redirect to new articles routes for SEO)
 Route::get('/berita', function () {
     return redirect('/articles', 301);

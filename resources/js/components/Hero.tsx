@@ -311,7 +311,7 @@ export const Hero: React.FC = () => {
               className="mt-6 md:mt-8 max-w-xl mx-auto lg:mx-0"
             >
               <p className="text-base md:text-lg text-neutral-500 font-medium tracking-wide leading-relaxed">
-                Partner strategis <span className="text-lux-black font-bold">konsultan pajak di Samarinda</span>. Mengintegrasikan regulasi, manajemen finansial, dan inovasi digital untuk bisnis di Kalimantan Timur.
+                Partner strategis <span className="text-lux-black font-bold">konsultan bisnis di Samarinda</span>. Mengintegrasikan regulasi, manajemen finansial, dan inovasi digital untuk bisnis di Kalimantan Timur.
               </p>
             </motion.div>
 

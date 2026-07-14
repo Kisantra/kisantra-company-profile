@@ -13,7 +13,7 @@ export const Contact: React.FC = () => {
             <div className="col-span-1 lg:col-span-2">
                 <h3 className="font-sans font-bold text-2xl tracking-tight mb-4 text-white">KISANTRA CONSULT</h3>
                 <p className="text-neutral-400 text-sm leading-relaxed max-w-sm">
-                    Mitra strategis terpercaya Anda sebagai <span className="text-lux-teal">konsultan pajak di Samarinda</span>. Integrasi keuangan dan solusi digital untuk pertumbuhan bisnis yang kokoh di Kalimantan Timur.
+                    Mitra strategis terpercaya Anda sebagai <span className="text-lux-teal">konsultan bisnis di Samarinda</span>. Integrasi keuangan dan solusi digital untuk pertumbuhan bisnis yang kokoh di Kalimantan Timur.
                 </p>
             </div>
 
@@ -26,7 +26,7 @@ export const Contact: React.FC = () => {
                     rel="noopener noreferrer"
                     className="block text-neutral-300 font-sans font-light leading-relaxed hover:text-lux-teal transition-colors"
                  >
-                    Gg. Kopta, Air Putih,<br/>
+                    Jln. Suryanta, Gg. Kopta, Air Putih,<br/>
                     Kec. Samarinda Ulu,<br/>
                     Kota Samarinda, Kalimantan Timur 75243
                  </a>
