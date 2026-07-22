@@ -156,8 +156,8 @@ const Causes: React.FC = () => (
     <div className="mx-auto grid max-w-[1400px] gap-14 px-6 md:px-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-24">
       <div className="lg:sticky lg:top-32 lg:self-start">
         <span className="mb-4 block text-xs font-bold uppercase tracking-[0.28em] text-lux-teal">Kenapa terbit?</span>
-        <h2 className="text-3xl font-bold leading-[1.1] tracking-tight text-lux-black md:text-5xl">
-          Penyebab umum diterbitkannya SP2DK
+        <h2 className="text-3xl font-bold leading-[1.08] tracking-tight text-lux-black md:text-5xl">
+          <span className="font-serif font-normal italic text-lux-teal">Penyebab umum</span> diterbitkannya SP2DK
         </h2>
         <p className="mt-6 max-w-md text-base leading-relaxed text-neutral-500">
           KPP menerbitkan SP2DK untuk meminta klarifikasi atas data atau transaksi yang dinilai belum
@@ -361,28 +361,63 @@ const Process: React.FC = () => {
 };
 
 /* ---------------------------------- Biaya --------------------------------- */
+const priceFactors = [
+  'Tingkat kompleksitas kasus',
+  'Jumlah data yang dianalisis',
+  'Ruang lingkup pendampingan',
+];
+
 const Pricing: React.FC = () => (
-  <section className="w-full bg-lux-white py-20 md:py-28">
+  <section className="w-full bg-lux-white py-24 md:py-32">
     <div className="mx-auto max-w-[1100px] px-6 md:px-12">
-      <motion.div
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-80px' }}
-        transition={{ duration: 0.6, ease: EXPO }}
-        className="max-w-3xl"
-      >
-        <span className="mb-5 block text-xs font-bold uppercase tracking-[0.28em] text-lux-teal">Estimasi Biaya</span>
-        <p className="text-2xl font-bold leading-[1.15] tracking-tight text-lux-black md:text-4xl">
-          Biaya menyesuaikan tingkat kompleksitas kasus, jumlah data yang dianalisis, dan ruang lingkup
-          pendampingan.
-        </p>
-        <a href="#konsultasi" className="group mt-8 inline-flex items-center gap-3 text-sm font-bold uppercase tracking-[0.14em] text-lux-black transition-colors hover:text-lux-teal">
-          Minta penawaran untuk kasus Anda
-          <span className="flex h-9 w-9 items-center justify-center rounded-full border border-neutral-300 transition-colors group-hover:border-lux-teal group-hover:bg-lux-teal group-hover:text-white">
-            <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-          </span>
-        </a>
-      </motion.div>
+      <div className="grid gap-12 lg:grid-cols-2 lg:items-center lg:gap-20">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6, ease: EXPO }}
+        >
+          <span className="mb-4 block text-xs font-bold uppercase tracking-[0.28em] text-lux-teal">Estimasi Biaya</span>
+          <h2 className="text-4xl font-bold leading-[1.0] tracking-tight text-lux-black md:text-6xl">
+            Harga yang <span className="font-serif font-normal italic text-lux-teal">proporsional.</span>
+          </h2>
+          <p className="mt-6 max-w-md text-base leading-relaxed text-neutral-500 md:text-lg">
+            Setiap kasus SP2DK berbeda. Biaya ditentukan oleh tingkat kompleksitas, jumlah data yang
+            dianalisis, dan ruang lingkup pendampingan.
+          </p>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6, delay: 0.1, ease: EXPO }}
+          className="rounded-[1.75rem] border border-neutral-200 bg-white p-8 shadow-[0_30px_70px_-40px_rgba(10,10,10,0.18)] md:p-10"
+        >
+          <span className="block text-[11px] font-bold uppercase tracking-[0.2em] text-neutral-400">Yang menentukan biaya</span>
+
+          <ul className="mt-6 space-y-5 border-b border-neutral-100 pb-7">
+            {priceFactors.map((f, i) => (
+              <li key={f} className="flex items-center gap-5">
+                <span className="font-mono text-sm text-lux-teal-dark">0{i + 1}</span>
+                <span className="text-base font-medium text-neutral-700">{f}</span>
+              </li>
+            ))}
+          </ul>
+
+          <motion.a
+            whileTap={{ scale: 0.98 }}
+            href="#konsultasi"
+            className="group mt-7 flex w-full items-center justify-center gap-2.5 rounded-full bg-lux-teal py-4 text-xs font-bold uppercase tracking-[0.15em] text-lux-black transition-all duration-300 hover:-translate-y-0.5 hover:bg-lux-teal-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lux-teal focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+          >
+            Minta Penawaran
+            <svg className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </motion.a>
+          <p className="mt-4 text-center text-xs text-neutral-400">Tim kami akan menghubungi Anda untuk analisis awal.</p>
+        </motion.div>
+      </div>
     </div>
   </section>
 );
