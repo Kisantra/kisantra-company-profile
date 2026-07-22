@@ -87,9 +87,18 @@ Route::get('/layanan', function () {
     return Inertia::render('Layanan');
 })->name('layanan.index');
 
+Route::get('/sp2dk', function () {
+    return Inertia::render('SP2DK');
+})->name('sp2dk.index');
+
 Route::get('/kontak', function () {
     return Inertia::render('Contact');
 })->name('contact.index');
+
+// Standalone profile / contact landing page — not in navigation, accessible via direct link only
+Route::get('/profil', function () {
+    return Inertia::render('Profil');
+})->name('profile.card');
 
 // Articles routes with Inertia for SPA navigation
 Route::get('/articles', function () {
@@ -204,6 +213,7 @@ Route::get('/sitemap.xml', function () {
         ['loc' => url('/'), 'changefreq' => 'weekly', 'priority' => '1.0'],
         ['loc' => url('/tentang-kami'), 'changefreq' => 'monthly', 'priority' => '0.8'],
         ['loc' => url('/layanan'), 'changefreq' => 'monthly', 'priority' => '0.9'],
+        ['loc' => url('/sp2dk'), 'changefreq' => 'monthly', 'priority' => '0.9'],
         ['loc' => url('/karir'), 'changefreq' => 'weekly', 'priority' => '0.7'],
         ['loc' => url('/kontak'), 'changefreq' => 'yearly', 'priority' => '0.6'],
         ['loc' => url('/pengumuman'), 'changefreq' => 'weekly', 'priority' => '0.7'],
