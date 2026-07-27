@@ -84,8 +84,66 @@ Route::get('/tentang-kami', function () {
 })->name('about.index');
 
 Route::get('/layanan', function () {
-    return Inertia::render('Layanan');
+    $services = \App\Models\Service::active()
+        ->ordered()
+        ->get(['id', 'name', 'subtitle', 'slug', 'category', 'description', 'price', 'price_note', 'features', 'hero_image'])
+        ->map(fn ($s) => [
+            'id' => $s->id,
+            'name' => $s->name,
+            'subtitle' => $s->subtitle,
+            'slug' => $s->slug,
+            'category' => $s->category,
+            'description' => str_replace('//storage/', '/storage/', (string) $s->description),
+            'price' => $s->price,
+            'price_note' => $s->price_note,
+            'features' => $s->features ?? [],
+            'hero_image' => $s->hero_image,
+        ]);
+
+    return Inertia::render('Layanan', [
+        'services' => $services,
+    ]);
 })->name('layanan.index');
+
+Route::get('/layanan/{slug}', function ($slug) {
+    $service = \App\Models\Service::active()->where('slug', $slug)->firstOrFail();
+
+    $related = \App\Models\Service::active()
+        ->where('category', $service->category)
+        ->where('id', '!=', $service->id)
+        ->ordered()
+        ->limit(3)
+        ->get(['id', 'name', 'slug', 'category', 'price', 'price_note'])
+        ->map(fn ($s) => [
+            'id' => $s->id,
+            'name' => $s->name,
+            'slug' => $s->slug,
+            'category' => $s->category,
+            'price' => $s->price,
+            'price_note' => $s->price_note,
+        ]);
+
+    return Inertia::render('ServiceDetail', [
+        'service' => [
+            'id' => $service->id,
+            'name' => $service->name,
+            'subtitle' => $service->subtitle,
+            'slug' => $service->slug,
+            'category' => $service->category,
+            'hero_image' => $service->hero_image,
+            'description' => str_replace('//storage/', '/storage/', (string) $service->description),
+            'overview' => str_replace('//storage/', '/storage/', (string) $service->overview),
+            'price' => $service->price,
+            'price_note' => $service->price_note,
+            'features' => $service->features ?? [],
+            'process_steps' => $service->process_steps ?? [],
+            'examples' => $service->examples ?? [],
+            'faqs' => $service->faqs ?? [],
+            'seo_description' => $service->seo_description,
+        ],
+        'related' => $related,
+    ]);
+})->name('layanan.show');
 
 Route::get('/sp2dk', function () {
     return Inertia::render('SP2DK');
@@ -235,6 +293,15 @@ Route::get('/sitemap.xml', function () {
             'lastmod' => optional($announcement->updated_at)->toAtomString(),
             'changefreq' => 'monthly',
             'priority' => '0.6',
+        ];
+    }
+
+    foreach (\App\Models\Service::active()->get(['slug', 'updated_at']) as $service) {
+        $urls[] = [
+            'loc' => url('/layanan/' . $service->slug),
+            'lastmod' => optional($service->updated_at)->toAtomString(),
+            'changefreq' => 'monthly',
+            'priority' => '0.8',
         ];
     }
 

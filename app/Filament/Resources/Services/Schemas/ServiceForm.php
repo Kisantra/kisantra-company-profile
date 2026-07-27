@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Services\Schemas;
 
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -27,7 +28,13 @@ class ServiceForm
                             ->maxLength(255)
                             ->live(onBlur: true)
                             ->afterStateUpdated(fn ($state, callable $set) => $set('slug', \Illuminate\Support\Str::slug($state))),
-                        
+
+                        TextInput::make('subtitle')
+                            ->label('Subjudul')
+                            ->maxLength(255)
+                            ->placeholder('Tagline singkat (opsional)')
+                            ->columnSpanFull(),
+
                         TextInput::make('slug')
                             ->label('Slug')
                             ->required()
@@ -65,6 +72,18 @@ class ServiceForm
                                 ],
                             ])
                             ->columnSpanFull(),
+
+                        FileUpload::make('hero_image')
+                            ->label('Gambar Sampul')
+                            ->image()
+                            ->disk('public')
+                            ->visibility('public')
+                            ->directory('services/images')
+                            ->maxSize(2048)
+                            ->imageEditor()
+                            ->imageEditorAspectRatios(['16:9', '4:3'])
+                            ->helperText('Opsional. Rasio 16:9 disarankan. Maks 2MB.')
+                            ->columnSpanFull(),
                     ])
                     ->columns(2),
 
@@ -95,6 +114,66 @@ class ServiceForm
                             ->helperText('Tekan Enter setelah setiap fitur')
                             ->columnSpanFull(),
                     ]),
+
+                Section::make('Konten Halaman Detail')
+                    ->description('Konten yang tampil di halaman detail layanan')
+                    ->schema([
+                        RichEditor::make('overview')
+                            ->label('Ringkasan / Overview')
+                            ->helperText('Penjelasan lengkap di bagian atas halaman detail')
+                            ->columnSpanFull(),
+
+                        Repeater::make('process_steps')
+                            ->label('Proses / Langkah')
+                            ->schema([
+                                TextInput::make('title')->label('Judul Langkah')->required()->maxLength(150),
+                                Textarea::make('description')->label('Deskripsi')->rows(2)->maxLength(400)->columnSpanFull(),
+                            ])
+                            ->itemLabel(fn (array $state): ?string => $state['title'] ?? null)
+                            ->addActionLabel('Tambah Langkah')
+                            ->reorderable()
+                            ->collapsed()
+                            ->defaultItems(0)
+                            ->columnSpanFull(),
+
+                        Repeater::make('examples')
+                            ->label('Contoh Layanan / Kasus')
+                            ->schema([
+                                TextInput::make('title')->label('Judul Contoh')->required()->maxLength(150),
+                                Textarea::make('description')->label('Deskripsi')->rows(2)->maxLength(400)->columnSpanFull(),
+                            ])
+                            ->itemLabel(fn (array $state): ?string => $state['title'] ?? null)
+                            ->addActionLabel('Tambah Contoh')
+                            ->reorderable()
+                            ->collapsed()
+                            ->defaultItems(0)
+                            ->columnSpanFull(),
+
+                        Repeater::make('faqs')
+                            ->label('FAQ')
+                            ->schema([
+                                TextInput::make('question')->label('Pertanyaan')->required()->maxLength(255),
+                                Textarea::make('answer')->label('Jawaban')->rows(3)->maxLength(800)->columnSpanFull(),
+                            ])
+                            ->itemLabel(fn (array $state): ?string => $state['question'] ?? null)
+                            ->addActionLabel('Tambah FAQ')
+                            ->reorderable()
+                            ->collapsed()
+                            ->defaultItems(0)
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsed(),
+
+                Section::make('SEO')
+                    ->schema([
+                        Textarea::make('seo_description')
+                            ->label('Meta Description')
+                            ->rows(2)
+                            ->maxLength(300)
+                            ->helperText('Untuk hasil pencarian Google (opsional, fallback ke deskripsi)')
+                            ->columnSpanFull(),
+                    ])
+                    ->collapsed(),
 
                 Section::make('Smart Filter')
                     ->description('Filter untuk rekomendasi layanan')

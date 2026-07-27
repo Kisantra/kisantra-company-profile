@@ -13,13 +13,20 @@ class Service extends Model
 
     protected $fillable = [
         'name',
+        'subtitle',
         'slug',
+        'hero_image',
         'category',
         'description',
+        'overview',
         'price',
         'price_note',
         // 'icon', // REMOVED - Icons now auto-generated based on category
         'features',
+        'process_steps',
+        'examples',
+        'faqs',
+        'seo_description',
         'target_business_types',
         'target_pkp_status',
         'search_keywords',
@@ -30,6 +37,9 @@ class Service extends Model
 
     protected $casts = [
         'features' => 'array',
+        'process_steps' => 'array',
+        'examples' => 'array',
+        'faqs' => 'array',
         'target_business_types' => 'array',
         'target_pkp_status' => 'array',
         'search_keywords' => 'array',
@@ -37,6 +47,20 @@ class Service extends Model
         'order' => 'integer',
         'recommendation_priority' => 'integer',
     ];
+
+    // Accessors
+    public function getHeroImageAttribute($value): ?string
+    {
+        if (empty($value)) {
+            return null;
+        }
+
+        if (str_starts_with($value, 'http://') || str_starts_with($value, 'https://')) {
+            return $value;
+        }
+
+        return '/storage/' . ltrim($value, '/');
+    }
 
     // Automatically generate slug when creating
     protected static function boot()
