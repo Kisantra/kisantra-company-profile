@@ -545,7 +545,7 @@ const SP2DK: React.FC = () => {
           transition={{ duration: 0.6 }}
           className="min-h-screen bg-lux-white text-lux-black selection:bg-lux-teal selection:text-white"
         >
-          <Navbar />
+          <Navbar theme="dark" />
           <main>
             <Hero />
             <Definition />

@@ -37,7 +37,7 @@ const itemActive = (url: string, item: MenuItem) =>
 const FOCUS_RING = 'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lux-teal focus-visible:ring-offset-4 focus-visible:ring-offset-transparent';
 
 /* --------------------------- Desktop dropdown ----------------------------- */
-const DesktopDropdown: React.FC<{ item: MenuItem; url: string; base: string; glow: string }> = ({ item, url, base, glow }) => {
+const DesktopDropdown: React.FC<{ item: MenuItem; url: string; base: string; glow: string; rest: string }> = ({ item, url, base, glow, rest }) => {
   const [open, setOpen] = useState(false);
   const reduce = useReducedMotion();
   const active = itemActive(url, item);
@@ -63,7 +63,7 @@ const DesktopDropdown: React.FC<{ item: MenuItem; url: string; base: string; glo
         data-trigger=""
         aria-haspopup="true"
         aria-expanded={open}
-        className={`${base} ${glow} ${FOCUS_RING} inline-flex items-center gap-1.5 rounded-sm ${active ? 'text-lux-teal' : 'text-lux-black hover:text-lux-teal'}`}
+        className={`${base} ${glow} ${FOCUS_RING} inline-flex items-center gap-1.5 rounded-sm ${active ? 'text-lux-teal' : `${rest} hover:text-lux-teal`}`}
       >
         {item.label}
         <motion.svg animate={{ rotate: open ? 180 : 0 }} transition={{ duration: reduce ? 0 : 0.25 }} className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -177,7 +177,7 @@ const MobileAccordion: React.FC<{ item: MenuItem; index: number; url: string; on
   );
 };
 
-export const Navbar: React.FC = () => {
+export const Navbar: React.FC<{ theme?: 'light' | 'dark' }> = ({ theme = 'light' }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isNavigating, setIsNavigating] = useState(false);
@@ -224,8 +224,18 @@ export const Navbar: React.FC = () => {
     open: { y: 0, opacity: 1, transition: { duration: 0.6, ease: [0.76, 0, 0.24, 1] } },
   };
 
+  const dark = theme === 'dark';
+  const restText = dark ? 'text-white' : 'text-lux-black';
   const deskLinkBase = 'group relative text-sm font-semibold tracking-tight transition-colors duration-300';
-  const glow = 'drop-shadow-[0_1px_3px_rgba(255,255,255,0.95)]';
+  const glow = scrolled ? '' : dark ? 'drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]' : 'drop-shadow-[0_1px_3px_rgba(255,255,255,0.95)]';
+  const logoFx = `${dark || isOpen ? 'brightness-0 invert' : ''} ${scrolled || isOpen ? '' : dark ? 'drop-shadow-[0_1px_3px_rgba(0,0,0,0.5)]' : 'drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)]'}`;
+  const barColor = isOpen || dark ? 'bg-white' : 'bg-lux-black';
+  const barGlow = scrolled || isOpen ? '' : dark ? 'drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]' : 'drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)]';
+  const headerBg = scrolled
+    ? dark
+      ? 'bg-lux-black/70 backdrop-blur-xl border-b border-white/10 shadow-[0_8px_30px_-14px_rgba(0,0,0,0.5)]'
+      : 'bg-lux-white/80 backdrop-blur-xl border-b border-neutral-200/60 shadow-[0_8px_30px_-16px_rgba(10,10,10,0.15)]'
+    : 'bg-transparent';
 
   return (
     <>
@@ -245,7 +255,7 @@ export const Navbar: React.FC = () => {
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, delay: 0.1 }}
-        className={`fixed inset-x-0 top-0 z-50 bg-transparent transition-all duration-300 ${scrolled ? 'py-4' : 'py-5 md:py-6'}`}
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${headerBg} ${scrolled ? 'py-4' : 'py-5 md:py-6'}`}
       >
         <div className="mx-auto flex max-w-[1500px] items-center justify-between px-6 md:px-12">
           <Link href="/" className={`group block shrink-0 rounded-sm ${FOCUS_RING}`} aria-label="Kisantra Consult, ke Beranda">
@@ -255,7 +265,7 @@ export const Navbar: React.FC = () => {
               <img
                 src="/image/Logo/Logo Horizontal.png"
                 alt="Kisantra Consult"
-                className={`w-auto drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)] transition-all duration-300 group-hover:scale-105 ${scrolled ? 'h-8' : 'h-9 md:h-10'}`}
+                className={`w-auto transition-all duration-300 group-hover:scale-105 ${logoFx} ${scrolled ? 'h-8' : 'h-9 md:h-10'}`}
               />
             </picture>
           </Link>
@@ -263,11 +273,11 @@ export const Navbar: React.FC = () => {
           <nav className="hidden items-center gap-7 lg:flex xl:gap-9" aria-label="Navigasi utama">
             {menuItems.slice(0, -1).map((item) => {
               if (item.children) {
-                return <DesktopDropdown key={item.href} item={item} url={url} base={deskLinkBase} glow={glow} />;
+                return <DesktopDropdown key={item.href} item={item} url={url} base={deskLinkBase} glow={glow} rest={restText} />;
               }
               const active = isActive(item.href);
               return (
-                <Link key={item.href} href={item.href} aria-current={active ? 'page' : undefined} className={`${deskLinkBase} ${glow} ${FOCUS_RING} rounded-sm ${active ? 'text-lux-teal' : 'text-lux-black hover:text-lux-teal'}`}>
+                <Link key={item.href} href={item.href} aria-current={active ? 'page' : undefined} className={`${deskLinkBase} ${glow} ${FOCUS_RING} rounded-sm ${active ? 'text-lux-teal' : `${restText} hover:text-lux-teal`}`}>
                   {item.label}
                   <span className={`absolute -bottom-1.5 left-0 h-0.5 rounded-full bg-lux-teal transition-all duration-300 ${active ? 'w-full' : 'w-0 group-hover:w-full group-focus-visible:w-full'}`} />
                 </Link>
@@ -277,7 +287,7 @@ export const Navbar: React.FC = () => {
             <Link
               href="/kontak"
               aria-current={isActive('/kontak') ? 'page' : undefined}
-              className={`rounded-full px-5 py-2.5 text-xs font-bold uppercase tracking-[0.12em] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lux-teal focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${isActive('/kontak') ? 'bg-lux-teal text-white' : 'bg-lux-black text-white hover:bg-lux-teal'}`}
+              className={`rounded-full px-5 py-2.5 text-xs font-bold uppercase tracking-[0.12em] transition-all duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lux-teal focus-visible:ring-offset-2 focus-visible:ring-offset-transparent ${isActive('/kontak') ? 'bg-lux-teal text-white' : dark ? 'bg-lux-white text-lux-black hover:bg-lux-teal hover:text-white' : 'bg-lux-black text-white hover:bg-lux-teal'}`}
             >
               Kontak
             </Link>
@@ -289,9 +299,9 @@ export const Navbar: React.FC = () => {
             aria-label={isOpen ? 'Tutup menu' : 'Buka menu'}
             aria-expanded={isOpen}
           >
-            <span className={`h-[2px] bg-lux-black drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)] transition-all duration-300 ${isOpen ? 'w-7 translate-y-[8px] rotate-45' : 'w-7 group-hover:bg-lux-teal'}`} />
-            <span className={`h-[2px] bg-lux-black drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)] transition-all duration-300 ${isOpen ? 'w-7 opacity-0' : 'w-5 group-hover:w-7 group-hover:bg-lux-teal'}`} />
-            <span className={`h-[2px] bg-lux-black drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)] transition-all duration-300 ${isOpen ? 'w-7 -translate-y-[8px] -rotate-45' : 'w-4 group-hover:w-7 group-hover:bg-lux-teal'}`} />
+            <span className={`h-[2px] ${barColor} ${barGlow} transition-all duration-300 ${isOpen ? 'w-7 translate-y-[8px] rotate-45' : 'w-7 group-hover:bg-lux-teal'}`} />
+            <span className={`h-[2px] ${barColor} ${barGlow} transition-all duration-300 ${isOpen ? 'w-7 opacity-0' : 'w-5 group-hover:w-7 group-hover:bg-lux-teal'}`} />
+            <span className={`h-[2px] ${barColor} ${barGlow} transition-all duration-300 ${isOpen ? 'w-7 -translate-y-[8px] -rotate-45' : 'w-4 group-hover:w-7 group-hover:bg-lux-teal'}`} />
           </button>
         </div>
       </motion.header>

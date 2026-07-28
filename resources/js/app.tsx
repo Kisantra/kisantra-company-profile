@@ -4,6 +4,7 @@ import ReactGA from 'react-ga4';
 import { createRoot } from 'react-dom/client';
 import { createInertiaApp, router } from '@inertiajs/react';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { FloatingConsult } from './components/FloatingConsult';
 
 // Extend Window interface for Google Analytics
 declare global {
@@ -50,7 +51,12 @@ createInertiaApp({
         ReactGA.initialize("G-ZBBHT60QP9");
         // Track the initial page view
         ReactGA.send({ hitType: "pageview", page: window.location.pathname });
-        root.render(<App {...props} />);
+        root.render(
+            <>
+                <App {...props} />
+                <FloatingConsult />
+            </>
+        );
     },
     progress: {
         color: '#14b8a6',
