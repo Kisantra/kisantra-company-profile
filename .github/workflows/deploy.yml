@@ -1,0 +1,90 @@
+name: Deploy ke produksi
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:                 # tombol "Run workflow" untuk deploy ulang tanpa commit
+
+concurrency:
+  group: deploy-produksi
+  cancel-in-progress: false          # jangan batalkan deploy di tengah jalan
+
+jobs:
+  # GERBANG: reproduksi build produksi di runner. Kalau gagal, "deploy" tak jalan.
+  verify:
+    name: Verifikasi build bersih
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Siapkan PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'         # samakan dengan server
+          extensions: mbstring, zip, gd, intl, bcmath, exif, pcntl, sodium, curl, dom, xml
+          coverage: none
+      - name: Validasi composer sinkron
+        run: composer validate --no-check-publish
+      - name: Siapkan .env minimal        # agar package:discover bisa boot (repo tanpa .env.example)
+        run: |
+          cat > .env <<'EOF'
+          APP_NAME=CI
+          APP_ENV=testing
+          APP_DEBUG=true
+          APP_URL=http://localhost
+          LOG_CHANNEL=stderr
+          DB_CONNECTION=sqlite
+          DB_DATABASE=:memory:
+          CACHE_DRIVER=array
+          SESSION_DRIVER=array
+          QUEUE_CONNECTION=sync
+          BROADCAST_DRIVER=null
+          FILESYSTEM_DISK=local
+          MAIL_MAILER=array
+          EOF
+          echo "APP_KEY=base64:$(head -c 32 /dev/urandom | base64)" >> .env
+      - name: Install PHP (bersih, dari lock, --no-dev)
+        run: composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+      - name: Pastikan service provider termuat
+        run: php artisan package:discover --ansi
+      - name: Siapkan Node
+        uses: actions/setup-node@v4
+        with: { node-version: '22', cache: npm }   # samakan dengan server
+      - name: Build aset
+        run: |
+          npm ci
+          npm run build
+
+  # DEPLOY: hanya jalan bila verify hijau.
+  deploy:
+    name: Tarik & bangun di server
+    needs: verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Siapkan kunci SSH
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          HOST: ${{ secrets.DEPLOY_HOST }}
+          PORT: ${{ secrets.DEPLOY_PORT }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key   # via env agar tak bocor ke log
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p "${PORT:-22}" -H "$HOST" >> ~/.ssh/known_hosts 2>/dev/null
+      - name: Jalankan deploy
+        env:
+          HOST: ${{ secrets.DEPLOY_HOST }}
+          USER_NAME: ${{ secrets.DEPLOY_USER }}
+          PORT: ${{ secrets.DEPLOY_PORT }}
+          APP_DIR: ${{ secrets.DEPLOY_PATH }}
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/deploy_key -p "${PORT:-22}" -o BatchMode=yes -o ServerAliveInterval=30 \
+              "$USER_NAME@$HOST" \
+              "set -euo pipefail
+               cd '$APP_DIR'
+               git fetch origin main
+               git merge --ff-only origin/main
+               APP_DIR='$APP_DIR' bash deploy.sh"
+      - name: Bersihkan kunci
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
