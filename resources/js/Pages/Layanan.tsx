@@ -136,7 +136,7 @@ const Layanan: React.FC<Props> = ({ services = [] }) => {
 
             {/* Catalog by category */}
             {grouped.map((group) => (
-              <section key={group.category}>
+              <section key={group.category} id={group.category.toLowerCase()} className="scroll-mt-28">
                 <div className="mb-8 flex items-baseline gap-4">
                   <h2 className="text-2xl font-bold tracking-tight text-lux-black md:text-3xl">{group.category}</h2>
                   <span className="font-mono text-xs uppercase tracking-widest text-neutral-400">{group.items.length} layanan</span>
