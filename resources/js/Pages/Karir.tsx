@@ -148,7 +148,7 @@ const FileChip: React.FC<{ file: File; onRemove: () => void }> = ({ file, onRemo
 );
 
 const pickButtonClass =
-    'inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg border border-lux-black px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-lux-black transition-colors hover:bg-lux-black hover:text-white focus-within:ring-2 focus-within:ring-lux-teal focus-within:ring-offset-2';
+    'relative inline-flex shrink-0 cursor-pointer items-center justify-center gap-2 rounded-lg border border-lux-black px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-lux-black transition-colors hover:bg-lux-black hover:text-white focus-within:ring-2 focus-within:ring-lux-teal focus-within:ring-offset-2';
 
 const DocumentField: React.FC<{
     doc: JobDocument;
@@ -203,7 +203,11 @@ const inputClass = (invalid: boolean) =>
 /** Education level without a GPA; mirrors the server rule. */
 const NO_GPA_LEVEL = 'SMA/SMK';
 
-/** Native radios styled as pills, so keyboard use and `required` work as usual. */
+/**
+ * Native radios styled as pills, so keyboard use and `required` work as usual.
+ * The label is `relative` so the sr-only radio stays inside it; otherwise focusing
+ * the radio scrolls the modal box instead of the form.
+ */
 const ChoicePills: React.FC<{
     name: string;
     options: { value: string; label: string }[];
@@ -217,7 +221,7 @@ const ChoicePills: React.FC<{
             return (
                 <label
                     key={option.value}
-                    className={`cursor-pointer rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-lux-teal has-[:focus-visible]:ring-offset-2 ${
+                    className={`relative cursor-pointer rounded-lg border px-4 py-2.5 text-sm font-medium transition-colors has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-lux-teal has-[:focus-visible]:ring-offset-2 ${
                         selected
                             ? 'border-lux-black bg-lux-black text-white'
                             : `bg-neutral-50 text-lux-black hover:border-lux-black ${invalid ? 'border-red-400' : 'border-neutral-200'}`
@@ -859,7 +863,7 @@ const Jobs: React.FC<{ groups: JobGroup[]; options: ApplicationOptions }> = ({ g
                         />
                         <motion.div
                             layoutId={`job-card-${selectedJob!.id}`}
-                            className="w-full max-w-3xl bg-white rounded-3xl overflow-hidden relative z-10 shadow-2xl max-h-[90vh] flex flex-col"
+                            className="w-full max-w-3xl bg-white rounded-3xl overflow-clip relative z-10 shadow-2xl max-h-[90vh] flex flex-col"
                         >
                             {!showApplicationForm && !submitSuccess && (
                                 <button
