@@ -52,8 +52,28 @@
                                         <td style="padding: 6px 0; font-size: 14px; color: #111827;">{{ $applicantPhone ?? '-' }}</td>
                                     </tr>
                                     <tr>
-                                        <td style="padding: 6px 0; font-size: 14px; color: #6b7280;">Address</td>
+                                        <td style="padding: 6px 0; font-size: 14px; color: #6b7280;">Domicile</td>
                                         <td style="padding: 6px 0; font-size: 14px; color: #111827;">{{ $applicantAddress ?? '-' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 6px 0; font-size: 14px; color: #6b7280;">Education</td>
+                                        <td style="padding: 6px 0; font-size: 14px; color: #111827;">{{ $education }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 6px 0; font-size: 14px; color: #6b7280;">Graduation Year</td>
+                                        <td style="padding: 6px 0; font-size: 14px; color: #111827;">{{ $graduationYear }}{{ $gpa ? ' · GPA '.$gpa : '' }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 6px 0; font-size: 14px; color: #6b7280;">Experience</td>
+                                        <td style="padding: 6px 0; font-size: 14px; color: #111827;">{{ $experience }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 6px 0; font-size: 14px; color: #6b7280;">Online Test</td>
+                                        <td style="padding: 6px 0; font-size: 14px; color: #111827;">{{ $onlineTest }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 6px 0; font-size: 14px; color: #6b7280;">Data Consent</td>
+                                        <td style="padding: 6px 0; font-size: 14px; color: #111827;">Agreed to recruitment data processing</td>
                                     </tr>
                                     <tr>
                                         <td style="padding: 6px 0; font-size: 14px; color: #6b7280;">LinkedIn</td>
@@ -80,16 +100,30 @@
                                 </div>
                             @endif
 
-                            <!-- Attachment Notice -->
-                            <div style="background-color: #f0fdfa; border: 1px solid #ccfbf1; padding: 16px; border-radius: 4px; display: flex; align-items: start; gap: 12px;">
-                                <div style="flex-shrink: 0; padding-top: 2px;">
-                                    <!-- Simple Icon using unicode -->
-                                    <span style="font-size: 16px;">📎</span>
-                                </div>
-                                <div>
-                                    <p style="margin: 0; font-size: 14px; color: #115e59; font-weight: 500;">Attachments Included</p>
-                                    <p style="margin: 4px 0 0 0; font-size: 13px; color: #134e4a;">The applicant's resume/CV and other documents are attached to this email.</p>
-                                </div>
+                            <!-- Documents -->
+                            <div>
+                                <h2 style="font-size: 16px; font-weight: 600; color: #111827; margin: 0 0 12px 0;">Documents</h2>
+                                @if(empty($documents))
+                                    <p style="margin: 0; font-size: 14px; color: #6b7280;">No documents were uploaded.</p>
+                                @else
+                                    <table border="0" cellpadding="0" cellspacing="0" width="100%" style="border-top: 1px solid #e5e7eb;">
+                                        @foreach($documents as $document)
+                                        <tr>
+                                            <td style="padding: 10px 0; font-size: 14px; color: #111827; font-weight: 600; width: 160px; vertical-align: top; border-bottom: 1px solid #e5e7eb;">{{ $document['label'] }}</td>
+                                            <td style="padding: 10px 0; font-size: 14px; color: #374151; vertical-align: top; border-bottom: 1px solid #e5e7eb;">
+                                                {{ $document['name'] }}
+                                                @if($document['attached'])
+                                                    <span style="display: block; font-size: 12px; color: #0d9488;">Attached</span>
+                                                @elseif($savedInAttendance)
+                                                    <span style="display: block; font-size: 12px; color: #b45309;">Not attached (email size limit). Open it in the attendance system.</span>
+                                                @else
+                                                    <span style="display: block; font-size: 12px; color: #b45309;">Not attached (email size limit). Saved on the website server: storage/app/private/{{ $document['stored_as'] }}</span>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </table>
+                                @endif
                             </div>
 
                         </td>

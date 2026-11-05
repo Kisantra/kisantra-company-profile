@@ -6,7 +6,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
-use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Queue\SerializesModels;
 
 class ApplicationConfirmationEmail extends Mailable
@@ -16,17 +15,15 @@ class ApplicationConfirmationEmail extends Mailable
     public $applicationData;
     public $jobTitle;
     public $applicantName;
-    public $files;
 
     /**
      * Create a new message instance.
      */
-    public function __construct($applicationData, $jobTitle, $applicantName, $files = [])
+    public function __construct($applicationData, $jobTitle, $applicantName)
     {
         $this->applicationData = $applicationData;
         $this->jobTitle = $jobTitle;
         $this->applicantName = $applicantName;
-        $this->files = $files;
     }
 
     /**
@@ -47,24 +44,5 @@ class ApplicationConfirmationEmail extends Mailable
         return new Content(
             view: 'emails.application-confirmation',
         );
-    }
-
-    /**
-     * Get the attachments for the message.
-     */
-    public function attachments(): array
-    {
-        $attachments = [];
-
-        // Add uploaded files as attachments
-        if (!empty($this->files)) {
-            foreach ($this->files as $file) {
-                 $attachments[] = Attachment::fromPath($file['path'])
-                    ->as($file['name'])
-                    ->withMime($file['mime']);
-            }
-        }
-
-        return $attachments;
     }
 }

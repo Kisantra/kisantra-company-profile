@@ -54,6 +54,16 @@
                                         <td style="padding: 4px 0; font-size: 14px; color: #6b7280;">Email Terdaftar</td>
                                         <td style="padding: 4px 0; font-size: 14px; color: #111827; font-weight: 500;">{{ $applicationData['applicant_email'] }}</td>
                                     </tr>
+                                    @if(!empty($applicationData['documents']))
+                                    <tr>
+                                        <td style="padding: 4px 0; font-size: 14px; color: #6b7280; vertical-align: top;">Dokumen Diterima</td>
+                                        <td style="padding: 4px 0; font-size: 14px; color: #111827; font-weight: 500;">
+                                            @foreach($applicationData['documents'] as $document)
+                                                <span style="display: block;">{{ $document['label'] }} <span style="color: #6b7280; font-weight: 400;">({{ $document['name'] }})</span></span>
+                                            @endforeach
+                                        </td>
+                                    </tr>
+                                    @endif
                                 </table>
                             </div>
 

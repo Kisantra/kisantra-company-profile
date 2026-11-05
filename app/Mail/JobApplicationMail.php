@@ -49,11 +49,30 @@ class JobApplicationMail extends Mailable
                 'applicantEmail' => $this->data['applicant_email'],
                 'applicantPhone' => $this->data['applicant_phone'],
                 'applicantAddress' => $this->data['applicant_address'] ?? $this->data['alamat'] ?? '-',
+                'education' => $this->data['education'] ?? '-',
+                'graduationYear' => $this->data['graduation_year'] ?? '-',
+                'gpa' => $this->data['gpa'] ?? null,
+                'experience' => $this->data['experience'] ?? '-',
+                'onlineTest' => $this->onlineTestSummary(),
                 'linkedinUrl' => $this->data['linkedin_url'],
                 'source' => $this->data['source'],
                 'coverLetter' => $this->data['cover_letter'],
+                'documents' => $this->data['documents'] ?? [],
+                'savedInAttendance' => $this->data['saved_in_attendance'] ?? true,
             ],
         );
+    }
+
+    private function onlineTestSummary(): string
+    {
+        if (! isset($this->data['online_test_ready'])) {
+            return '-';
+        }
+
+        $period = $this->data['online_test_period'] ?? null;
+
+        return ($this->data['online_test_ready'] ? 'Ready' : 'Not ready')
+            .' (laptop + camera'.($period ? ', '.$period : '').')';
     }
 
     /**

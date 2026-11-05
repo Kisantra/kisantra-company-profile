@@ -2,11 +2,16 @@
 
 namespace App\Filament\Resources\JobPostings\Schemas;
 
+use App\Models\JobPosting;
+use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\Toggle;
 
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
@@ -141,6 +146,62 @@ class JobPostingForm
                                 'underline',
                                 'undo',
                             ]),
+                    ]),
+                Section::make('Jadwal Tes Online')
+                    ->description('Pelamar ditanya apakah siap mengikuti tes online (dengan laptop dan kamera) pada rentang tanggal ini.')
+                    ->columnSpanFull()
+                    ->columns(2)
+                    ->schema([
+                        DatePicker::make('online_test_start_date')
+                            ->label('Mulai')
+                            ->native(false)
+                            ->displayFormat('d/m/Y'),
+                        DatePicker::make('online_test_end_date')
+                            ->label('Sampai')
+                            ->native(false)
+                            ->displayFormat('d/m/Y')
+                            ->afterOrEqual('online_test_start_date')
+                            ->validationMessages(['after_or_equal' => 'Tanggal selesai tidak boleh sebelum tanggal mulai.']),
+                    ]),
+                Section::make('Dokumen Persyaratan')
+                    ->description('Dokumen yang diunggah pelamar di form lamaran. Setiap file maksimal 5 MB dan ikut terkirim ke sistem attendance beserta jenisnya.')
+                    ->columnSpanFull()
+                    ->schema([
+                        Repeater::make('required_documents')
+                            ->label('Daftar dokumen')
+                            ->schema([
+                                TextInput::make('name')
+                                    ->label('Nama dokumen')
+                                    ->required()
+                                    ->maxLength(100)
+                                    ->distinct()
+                                    ->datalist(JobPosting::DOCUMENT_SUGGESTIONS)
+                                    ->placeholder('contoh: KTP'),
+                                CheckboxList::make('formats')
+                                    ->label('Format yang diterima')
+                                    ->options(collect(JobPosting::DOCUMENT_FORMATS)->map(fn (array $format) => $format['label'])->all())
+                                    ->default(['pdf'])
+                                    ->required()
+                                    ->columns(3),
+                                Toggle::make('required')
+                                    ->label('Wajib diunggah')
+                                    ->default(true),
+                                TextInput::make('description')
+                                    ->label('Keterangan untuk pelamar')
+                                    ->maxLength(200)
+                                    ->placeholder('contoh: Scan KTP yang masih berlaku')
+                                    ->columnSpanFull(),
+                            ])
+                            ->columns(3)
+                            ->default(JobPosting::DEFAULT_DOCUMENTS)
+                            ->itemLabel(fn (array $state): ?string => filled($state['name'] ?? null)
+                                ? $state['name'].(($state['required'] ?? true) ? ' (wajib)' : ' (opsional)')
+                                : null)
+                            ->addActionLabel('Tambah dokumen')
+                            ->reorderable()
+                            ->collapsible()
+                            ->maxItems(10)
+                            ->helperText('Jika daftar ini kosong, pelamar diminta mengunggah CV / Resume saja.'),
                     ]),
             ]);
     }

@@ -25,7 +25,7 @@ Route::get('/', function () {
 Route::get('/karir', function () {
     $jobs = \App\Models\JobPosting::active()
         ->with('batch')
-        ->select('id', 'title', 'location', 'employment_type', 'work_type', 'description', 'requirements', 'division', 'recruitment_batch_id', 'created_at')
+        ->select('id', 'title', 'location', 'employment_type', 'work_type', 'description', 'requirements', 'required_documents', 'online_test_start_date', 'online_test_end_date', 'division', 'recruitment_batch_id', 'created_at')
         ->latest()
         ->get();
 
@@ -39,6 +39,15 @@ Route::get('/karir', function () {
         'description' => $job->description,
         'requirements' => $job->requirements,
         'batch' => $job->batch?->name,
+        'online_test_period' => $job->onlineTestPeriodLabel(),
+        'documents' => array_map(fn ($doc) => [
+            'key' => $doc['key'],
+            'name' => $doc['name'],
+            'required' => $doc['required'],
+            'description' => $doc['description'],
+            'accept' => implode(',', array_map(fn ($ext) => '.'.$ext, $doc['extensions'])),
+            'formats_label' => $doc['formats_label'],
+        ], $job->documentRequirements()),
     ];
 
     // Group active jobs by their batch (closed batches fall back to "Lainnya").
@@ -74,6 +83,8 @@ Route::get('/karir', function () {
 
     return Inertia::render('Karir', [
         'groups' => $groups,
+        'educationLevels' => JobApplicationController::EDUCATION_LEVELS,
+        'experienceOptions' => JobApplicationController::EXPERIENCE_OPTIONS,
     ]);
 })->name('career.index');
 

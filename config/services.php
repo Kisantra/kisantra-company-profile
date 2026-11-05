@@ -28,6 +28,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'attendance' => [
+        'job_applications_url' => env('ATTENDANCE_JOB_APPLICATIONS_URL', 'https://attendance.kisantra.com/api/job-applications'),
+    ],
+
     'slack' => [
         'notifications' => [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
