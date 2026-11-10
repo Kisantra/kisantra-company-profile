@@ -7,6 +7,7 @@ use App\Filament\Resources\JobPostings\Pages\EditJobPosting;
 use App\Mail\ApplicationConfirmationEmail;
 use App\Mail\JobApplicationMail;
 use App\Models\JobPosting;
+use App\Models\RecruitmentBatch;
 use App\Models\User;
 use Filament\Forms\Components\Repeater;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -228,6 +229,37 @@ class JobApplicationDocumentsTest extends TestCase
         $this->assertStringContainsString('CV / Resume', $confirmation->getHtmlBody());
         // Only the embedded logo; the applicant's files are not sent back.
         $this->assertCount(1, $confirmation->getAttachments());
+    }
+
+    public function test_application_sends_the_job_recruitment_batch(): void
+    {
+        $this->fakeApiAccepts();
+        Mail::fake();
+        $batch = RecruitmentBatch::create([
+            'name' => 'Batch 2 Recruitment 2026',
+            'slug' => 'batch-2-recruitment-2026',
+            'status' => 'open',
+        ]);
+        $job = $this->job(['recruitment_batch_id' => $batch->id]);
+
+        $this->from('/karir')->post('/api/apply-job', $this->applicant($job, [
+            'documents' => ['ktp' => $this->pdf('ktp.pdf'), 'cv-resume' => $this->pdf('cv.pdf')],
+        ]))->assertSessionHasNoErrors();
+
+        Http::assertSent(fn (HttpRequest $request) => $this->multipartParts($request)['batch']['contents'] === 'Batch 2 Recruitment 2026');
+    }
+
+    public function test_application_for_a_job_without_batch_sends_an_empty_batch(): void
+    {
+        $this->fakeApiAccepts();
+        Mail::fake();
+        $job = $this->job();
+
+        $this->from('/karir')->post('/api/apply-job', $this->applicant($job, [
+            'documents' => ['ktp' => $this->pdf('ktp.pdf'), 'cv-resume' => $this->pdf('cv.pdf')],
+        ]))->assertSessionHasNoErrors();
+
+        Http::assertSent(fn (HttpRequest $request) => $this->multipartParts($request)['batch']['contents'] === null);
     }
 
     public function test_missing_required_document_is_rejected(): void

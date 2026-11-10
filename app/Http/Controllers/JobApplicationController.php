@@ -266,6 +266,8 @@ class JobApplicationController extends Controller
                 'cover_letter' => $validated['cover_letter'] ?? null,
                 'posisi' => $job->title,
                 'department_id' => self::DEPARTMENT_IDS[$job->division] ?? 4,
+                // Groups applicants per recruitment wave in attendance and exam.
+                'batch' => $job->batch?->name,
             ];
 
             foreach ($uploads as $i => $upload) {
