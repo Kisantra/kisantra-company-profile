@@ -227,6 +227,10 @@ class JobApplicationDocumentsTest extends TestCase
         $confirmation = $messages[1]->getOriginalMessage();
         $this->assertStringContainsString('Dokumen Diterima', $confirmation->getHtmlBody());
         $this->assertStringContainsString('CV / Resume', $confirmation->getHtmlBody());
+        $this->assertStringContainsString('Banyak kandidat berkualitas yang melamar untuk posisi ini', $confirmation->getHtmlBody());
+        $this->assertStringContainsString('href="mailto:kisantra.official@gmail.com"', $confirmation->getHtmlBody());
+        $this->assertStringContainsString('>kisantra.official@gmail.com</a>', $confirmation->getHtmlBody());
+        $this->assertStringNotContainsString('recruitment@kisantra.com', $confirmation->getHtmlBody());
         // Only the embedded logo; the applicant's files are not sent back.
         $this->assertCount(1, $confirmation->getAttachments());
     }
