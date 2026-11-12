@@ -72,7 +72,7 @@
                                 Langkah Selanjutnya
                             </h3>
                             <p style="margin: 0 0 24px 0; font-size: 15px; color: #4b5563;">
-                                Tim Talent Acquisition kami akan meninjau profil dan kualifikasi Anda. Mengingat banyaknya lamaran yang masuk, proses seleksi administrasi membutuhkan waktu sekitar <strong>7-14 hari kerja</strong>.
+                                Tim Talent Acquisition kami akan meninjau profil dan kualifikasi Anda. Banyak kandidat berkualitas yang melamar untuk posisi ini, sehingga proses seleksi administrasi membutuhkan waktu sekitar <strong>7-14 hari kerja</strong>.
                             </p>
                             <p style="margin: 0 0 32px 0; font-size: 15px; color: #4b5563;">
                                 Jika profil Anda sesuai dengan kebutuhan kami saat ini, kami akan menghubungi Anda melalui email atau telepon untuk tahapan selanjutnya.
@@ -80,7 +80,7 @@
 
                             <!-- Contact Support -->
                             <p style="margin: 0; font-size: 14px; color: #9ca3af; border-top: 1px solid #f3f4f6; padding-top: 24px;">
-                                Ada pertanyaan? Hubungi kami di <a href="mailto:hr.kisantra@gmail.com" style="color: #0d9488; text-decoration: none;">recruitment@kisantra.com</a>
+                                Ada pertanyaan? Hubungi kami di <a href="mailto:kisantra.official@gmail.com" style="color: #0d9488; text-decoration: none;">kisantra.official@gmail.com</a>
                             </p>
 
                         </td>
